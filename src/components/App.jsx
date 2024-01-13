@@ -14,7 +14,29 @@ export default function App () {
   const navigate = useNavigate()
 
   // TO DO: Fetch User
+  const fetchUser = async () => {
+    try {
+      const userProfile = await passportInstance.getUserInfo();
+      const accessToken = await passportInstance.getAccessToken();
+      const idToken = await passportInstance.getIdToken();
 
+      Boolean(userProfile === undefined) && navigate("/")
+
+      setUser({
+        Nickname: userProfile?.nickname,
+        Email: userProfile?.email,
+        accessToken: accessToken,
+        idToken: idToken,
+        sub: userProfile?.sub,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
   useEffect(() => {
     if (user) {
       const fetchWalletInfo = async () => {

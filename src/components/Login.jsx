@@ -4,7 +4,16 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   // TODO: login state and hook
-  
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
+
+  const checkUserLoggedIn = async () => {
+    const userProfile = await passportInstance.getUserInfo();
+    Boolean(userProfile !== undefined) && navigate("/app")
+  }
+  useEffect(() => {
+    checkUserLoggedIn()
+  }, [])
   return (
     <>
       <div className="card">
